@@ -22,6 +22,17 @@ daily_returns = close_prices.pct_change() * 100
 print("Daily returns (%):")
 print(daily_returns)
 
+#Calculate MDR
+mean_daily_return = daily_returns.mean()
+print("Mean daily return: ", round(mean_daily_return, 2), "%")
+
+#Calculate Daily Volatility
+daily_volatility = daily_returns.std()
+print("Daily volatility: ", round(daily_volatility, 2), "%")
+
+#Calculate Annualized Volatility
+annualized_volatility = daily_volatility * (252 ** 0.5)
+print("Annualized volatility: ", round(annualized_volatility, 2), "%")
 # Print best and worst days of daily returns
 best_day = daily_returns.idxmax()
 best_return = daily_returns.max()
