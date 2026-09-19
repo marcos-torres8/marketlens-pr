@@ -9,6 +9,14 @@ data = yf.download(symbol, period="1mo", interval="1d")
 # Close prices are extracted from data and used by matplotlib
 close_prices = data["Close"][symbol]
 
+# Get cumulative return
+first_closing_price = close_prices.iloc[0]
+print("First closing price: $", round(first_closing_price, 2))
+cumulative_returns = (close_prices / first_closing_price - 1) * 100
+print("Cumulative returns (%):")
+print(cumulative_returns)
+final_cumulative_return = cumulative_returns.iloc[-1]
+print("Final cumulative return: ", round(final_cumulative_return, 2), "%")
 # Calculate daily returns as percentage
 daily_returns = close_prices.pct_change() * 100  
 print("Daily returns (%):")
@@ -33,8 +41,19 @@ plt.xlabel("Date")
 plt.ylabel("Closing Price (USD)")
 # Creates grid in the chart for better visualization of points
 plt.grid(True)
-plt.show()
 
+#First show
+plt.show() 
+
+#Creates chart area for cumulative returns
+plt.figure()
+cumulative_returns.plot()
+plt.title(f"{symbol} Cumulative Returns - Last Month")
+plt.xlabel("Trading Date")
+plt.ylabel("Cumulative Return (%)")
+plt.grid(True)
+plt.axhline(y=0, color="black", linewidth=1)
+plt.show()
 # Display daily returns as a bar chart
 plt.figure()
 daily_returns.plot(kind="bar")
