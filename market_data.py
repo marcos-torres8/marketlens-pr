@@ -1,6 +1,8 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
-symbol = "AAPL"  # Example stock symbol
+
+# User inputs what stock ticker to analyze
+symbol = input("Enter a stock ticker: ")
 
 # Download one month of daily stock data for the specified symbol using 
 # yfinance
