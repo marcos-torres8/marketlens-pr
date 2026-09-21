@@ -4,7 +4,7 @@ MarketLens PR is a program that downloads one month of daily stock data using yf
 
 ## Current Features
 
-- Retrieves AAPL daily data
+- Allow users to select different stock symbols.
 - Displays OHLCV data
 - Calculates daily and cumulative returns
 - Finds best and worst daily-return dates
@@ -62,13 +62,11 @@ The program downloads one month of AAPL market data, prints the calculated retur
 
 ## Current Limitations
 
-1. Analyzes only AAPL.
-2. Uses only one month of historical data.
-3. Historical reults can't predict future performance.
+1. Uses only one month of historical data.
+2. Historical reults can't predict future performance.
 
 ## Future Improvements
 
-- Allow users to select different stock symbols.
 - Allow users to choose different analysis periods.
 - Compare a stock’s performance against a market benchmark.
 - Export analysis results and charts.
