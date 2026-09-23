@@ -11,6 +11,29 @@ data = yf.download(symbol, period="1mo", interval="1d")
 # Close prices are extracted from data and used by matplotlib
 close_prices = data["Close"][symbol]
 
+# Running peak
+running_peak = close_prices.cummax()
+print("Running peak($): ")
+print(running_peak.round(2))
+      
+# Drawdown
+drawdown = (close_prices - running_peak)/running_peak * 100
+print("Drawdown (%):")
+print(drawdown.round(2))
+
+maximum_drawdown = drawdown.min()
+maximum_drawdown_date = drawdown.idxmin()
+print("Maximum drawdown date: ", maximum_drawdown_date)
+print("Maximum drawdown: ", round(maximum_drawdown, 2), "%")
+
+# Peak and trough dates
+
+# Series containing prices only through the maximum-drawdown date
+prices_before_trough = close_prices.loc[:maximum_drawdown_date]
+trough_date= drawdown.idxmin()
+peak_date = close_prices.loc[:trough_date].idxmax()
+print("Peak date: ", peak_date)
+print("Trough date", trough_date)
 # Get cumulative return
 first_closing_price = close_prices.iloc[0]
 print("First closing price: $", round(first_closing_price, 2))
@@ -75,6 +98,17 @@ plt.title(f"{symbol} Daily Returns - Last Month")
 plt.xlabel("Date")
 plt.ylabel("Daily Return (%)")
 plt.show()
+# Display month's drawdown as a line chart
+plt.figure()
+drawdown.plot(kind="line")
+plt.scatter(trough_date, maximum_drawdown, color="red", label="Maximum Drawdown")
+plt.title(f"{symbol} Drawdown - Last Month")
+plt.axhline(y=0, color="black", linewidth=1)
+plt.xlabel("Date")
+plt.ylabel("Drawdown (%)")
+plt.grid(True)
+plt.legend()
+plt.show()
 
 print(data)
 
@@ -89,3 +123,4 @@ print(data.dtypes)
 # Checks every cell and returns the number of missing values in each column
 print("Missing values in data: ")
 print(data.isnull().sum())
+

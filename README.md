@@ -9,6 +9,7 @@ MarketLens PR is a program that downloads one month of daily stock data using yf
 - Calculates daily and cumulative returns
 - Finds best and worst daily-return dates
 - Calculates mean daily return, daily volatility, and annualized volatility.
+- Calculates maximum drawdown and identifies its peak and trough dates
 
 ### Visualizations
 
@@ -19,6 +20,11 @@ MarketLens PR is a program that downloads one month of daily stock data using yf
 3. Daily-returns bar chart
     - Shows each trading day’s percentage return.
     - The 0% horizontal line separates positive and negative days.
+4. Drawdown line chart
+    - Shows how far the stock falls below its running peak.
+    - Marks the maximum-drawdown point in red.
+
+
 
 
 ## Technologies Used
@@ -70,4 +76,4 @@ The program downloads one month of AAPL market data, prints the calculated retur
 - Allow users to choose different analysis periods.
 - Compare a stock’s performance against a market benchmark.
 - Export analysis results and charts.
-- Add maximum-drawdown analysis.
+
