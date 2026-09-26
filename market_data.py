@@ -1,15 +1,19 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # User inputs what stock ticker to analyze
 symbol = input("Enter a stock ticker: ")
+benchmark_symbol = "SPY"
 
-# Download one month of daily stock data for the specified symbol using 
+# Download one month of daily stock data for the specified symbol and benchmark using 
 # yfinance
 data = yf.download(symbol, period="1mo", interval="1d") 
+benchmark_data = yf.download(benchmark_symbol, period="1mo", interval="1d")
 
 # Close prices are extracted from data and used by matplotlib
 close_prices = data["Close"][symbol]
+benchmark_close_prices = benchmark_data["Close"][benchmark_symbol]
 
 # Running peak
 running_peak = close_prices.cummax()
@@ -47,6 +51,15 @@ daily_returns = close_prices.pct_change() * 100
 print("Daily returns (%):")
 print(daily_returns)
 
+benchmark_daily_returns = benchmark_close_prices.pct_change() * 100
+
+aligned_returns = pd.DataFrame({"Stock": daily_returns,
+"SPY": benchmark_daily_returns})
+aligned_returns = aligned_returns.dropna()
+print(aligned_returns)
+
+correlation = aligned_returns["Stock"].corr(aligned_returns["SPY"])
+print("Correlation: ", round(correlation, 2))
 #Calculate MDR
 mean_daily_return = daily_returns.mean()
 print("Mean daily return: ", round(mean_daily_return, 2), "%")
@@ -98,6 +111,7 @@ plt.title(f"{symbol} Daily Returns - Last Month")
 plt.xlabel("Date")
 plt.ylabel("Daily Return (%)")
 plt.show()
+
 # Display month's drawdown as a line chart
 plt.figure()
 drawdown.plot(kind="line")
@@ -108,6 +122,17 @@ plt.xlabel("Date")
 plt.ylabel("Drawdown (%)")
 plt.grid(True)
 plt.legend()
+plt.show()
+
+# Display months aligned returns
+plt.figure()
+plt.scatter(aligned_returns["SPY"], aligned_returns["Stock"])
+plt.xlabel("SPY Daily Return (%)")
+plt.ylabel(f"{symbol} Daily Return (%)")
+plt.title(f"{symbol} vs SPY - Daily Returns")
+plt.axhline(y=0, color="black", linewidth=1)
+plt.axvline(x=0, color="black", linewidth=1)
+plt.grid(True)
 plt.show()
 
 print(data)
