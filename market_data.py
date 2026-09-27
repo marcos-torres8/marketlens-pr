@@ -2,14 +2,29 @@ import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
 
-# User inputs what stock ticker to analyze
-symbol = input("Enter a stock ticker: ")
+
 benchmark_symbol = "SPY"
 
-# Download one month of daily stock data for the specified symbol and benchmark using 
-# yfinance
-data = yf.download(symbol, period="1mo", interval="1d") 
-benchmark_data = yf.download(benchmark_symbol, period="1mo", interval="1d")
+# User inputs what stock ticker to analyze. If ticker is invalid, user is prompted to re-enter a ticker.
+# User also chooses what period of time of data they want to download.
+
+while True:
+    symbol = input("Enter a stock ticker: ").strip().upper()
+    period = input("Choose a period (1mo, 3mo, 1y): ").strip().lower() 
+
+    if period not in ["1mo", "3mo", "1y"]:
+        print("Invalid period. Choose 1mo, 3mo, or 1y.")
+        continue
+
+    data = yf.download(symbol, period=period, interval="1d") 
+
+    # Verify if stock ticker is valid
+    if data.empty:
+        print(f"No data found for {symbol}. Verify the ticker or your connection.")
+    else:
+        break
+
+benchmark_data = yf.download(benchmark_symbol, period=period, interval="1d")
 
 # Close prices are extracted from data and used by matplotlib
 close_prices = data["Close"][symbol]
@@ -85,7 +100,7 @@ print("Worst return: ", round(worst_return, 2), "%")
 close_prices.plot()
 
 # Chart Modifications: Add title, labels, and grid to the plot
-plt.title(f"{symbol} Closing Price - Last Month")
+plt.title(f"{symbol} Closing Price - {period}")
 plt.xlabel("Date")
 plt.ylabel("Closing Price (USD)")
 # Creates grid in the chart for better visualization of points
@@ -97,7 +112,7 @@ plt.show()
 #Creates chart area for cumulative returns
 plt.figure()
 cumulative_returns.plot()
-plt.title(f"{symbol} Cumulative Returns - Last Month")
+plt.title(f"{symbol} Cumulative Returns - {period}")
 plt.xlabel("Trading Date")
 plt.ylabel("Cumulative Return (%)")
 plt.grid(True)
@@ -105,9 +120,10 @@ plt.axhline(y=0, color="black", linewidth=1)
 plt.show()
 # Display daily returns as a bar chart
 plt.figure()
-daily_returns.plot(kind="bar")
+plt.bar(daily_returns.index, daily_returns.values)
+plt.gcf().autofmt_xdate()
 plt.axhline(y=0, color="black", linewidth=1)
-plt.title(f"{symbol} Daily Returns - Last Month")
+plt.title(f"{symbol} Daily Returns - {period}")
 plt.xlabel("Date")
 plt.ylabel("Daily Return (%)")
 plt.show()
@@ -116,7 +132,7 @@ plt.show()
 plt.figure()
 drawdown.plot(kind="line")
 plt.scatter(trough_date, maximum_drawdown, color="red", label="Maximum Drawdown")
-plt.title(f"{symbol} Drawdown - Last Month")
+plt.title(f"{symbol} Drawdown - {period}")
 plt.axhline(y=0, color="black", linewidth=1)
 plt.xlabel("Date")
 plt.ylabel("Drawdown (%)")
@@ -129,7 +145,7 @@ plt.figure()
 plt.scatter(aligned_returns["SPY"], aligned_returns["Stock"])
 plt.xlabel("SPY Daily Return (%)")
 plt.ylabel(f"{symbol} Daily Return (%)")
-plt.title(f"{symbol} vs SPY - Daily Returns")
+plt.title(f"{symbol} vs SPY - {period}")
 plt.axhline(y=0, color="black", linewidth=1)
 plt.axvline(x=0, color="black", linewidth=1)
 plt.grid(True)

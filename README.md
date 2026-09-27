@@ -5,6 +5,8 @@ MarketLens PR is a program that downloads one month of daily stock data using yf
 ## Current Features
 
 - Allow users to select different stock symbols.
+- User can select periods 1mo, 3mo and 1y
+- Retry prompts for invalid periods or empty stock downloads
 - Displays OHLCV data
 - Calculates daily and cumulative returns
 - Finds best and worst daily-return dates
@@ -67,16 +69,14 @@ Run the program from the project folder:
 
 python3 market_data.py
 
-The program downloads one month of AAPL market data, prints the calculated returns and volatility statistics, and displays closing-price, cumulative-return, and daily-return charts.
+The program asks for a ticker and period of time of data to be downloaded, prints the calculated returns and volatility statistics, and displays closing-price, cumulative-return, and daily-return charts.
 
 ## Current Limitations
 
-1. Uses only one month of historical data.
-2. Historical reults can't predict future performance.
+1. Historical reults can't predict future performance.
 
 ## Future Improvements
 
-- Allow users to choose different analysis periods.
 - Compare a stock’s performance against a market benchmark.
 - Export analysis results and charts.
 
