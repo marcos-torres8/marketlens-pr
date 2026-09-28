@@ -8,22 +8,24 @@ benchmark_symbol = "SPY"
 # User inputs what stock ticker to analyze. If ticker is invalid, user is prompted to re-enter a ticker.
 # User also chooses what period of time of data they want to download.
 
-while True:
-    symbol = input("Enter a stock ticker: ").strip().upper()
-    period = input("Choose a period (1mo, 3mo, 1y): ").strip().lower() 
+def get_stock_data():
+    while True:
+        symbol = input("Enter a stock ticker: ").strip().upper()
+        period = input("Choose a period (1mo, 3mo, 1y): ").strip().lower() 
 
-    if period not in ["1mo", "3mo", "1y"]:
-        print("Invalid period. Choose 1mo, 3mo, or 1y.")
-        continue
+        if period not in ["1mo", "3mo", "1y"]:
+            print("Invalid period. Choose 1mo, 3mo, or 1y.")
+            continue
 
-    data = yf.download(symbol, period=period, interval="1d") 
+        data = yf.download(symbol, period=period, interval="1d") 
 
-    # Verify if stock ticker is valid
-    if data.empty:
-        print(f"No data found for {symbol}. Verify the ticker or your connection.")
-    else:
-        break
+        # Verify if stock ticker is valid
+        if data.empty:
+            print(f"No data found for {symbol}. Verify the ticker or your connection.")
+        else:
+            return symbol, period, data
 
+symbol, period, data = get_stock_data()
 benchmark_data = yf.download(benchmark_symbol, period=period, interval="1d")
 
 # Close prices are extracted from data and used by matplotlib
