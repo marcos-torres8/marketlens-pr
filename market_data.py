@@ -25,6 +25,13 @@ def get_stock_data():
         else:
             return symbol, period, data
 
+def calculate_returns(close_prices):
+    daily_returns = close_prices.pct_change() * 100
+    first_closing_price = close_prices.iloc[0]
+    cumulative_returns = (close_prices / first_closing_price - 1) * 100
+
+    return daily_returns, cumulative_returns
+
 symbol, period, data = get_stock_data()
 benchmark_data = yf.download(benchmark_symbol, period=period, interval="1d")
 
@@ -32,6 +39,8 @@ benchmark_data = yf.download(benchmark_symbol, period=period, interval="1d")
 close_prices = data["Close"][symbol]
 benchmark_close_prices = benchmark_data["Close"][benchmark_symbol]
 
+# Calculate daily and cumulative returns
+daily_returns, cumulative_returns = calculate_returns(close_prices)
 # Running peak
 running_peak = close_prices.cummax()
 print("Running peak($): ")
@@ -58,13 +67,10 @@ print("Trough date", trough_date)
 # Get cumulative return
 first_closing_price = close_prices.iloc[0]
 print("First closing price: $", round(first_closing_price, 2))
-cumulative_returns = (close_prices / first_closing_price - 1) * 100
 print("Cumulative returns (%):")
 print(cumulative_returns)
 final_cumulative_return = cumulative_returns.iloc[-1]
 print("Final cumulative return: ", round(final_cumulative_return, 2), "%")
-# Calculate daily returns as percentage
-daily_returns = close_prices.pct_change() * 100  
 print("Daily returns (%):")
 print(daily_returns)
 
