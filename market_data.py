@@ -1,6 +1,7 @@
 import yfinance as yf
 import matplotlib.pyplot as plt
 import pandas as pd
+from calculations import calculate_returns
 
 
 benchmark_symbol = "SPY"
@@ -25,12 +26,6 @@ def get_stock_data():
         else:
             return symbol, period, data
 
-def calculate_returns(close_prices):
-    daily_returns = close_prices.pct_change() * 100
-    first_closing_price = close_prices.iloc[0]
-    cumulative_returns = (close_prices / first_closing_price - 1) * 100
-
-    return daily_returns, cumulative_returns
 
 symbol, period, data = get_stock_data()
 benchmark_data = yf.download(benchmark_symbol, period=period, interval="1d")
