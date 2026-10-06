@@ -1,6 +1,6 @@
 # MarketLens PR
 
-MarketLens PR is a program that downloads one month of daily stock data using yfinance. It then analyzes closing prices, daily returns, cumulative returns, and volatility. The results are then visualized with Matplotlib. This project was built to develop Python, financial-data analysis, and Git/GitHub skills.
+MarketLens PR is a program that downloads daily stock data (1 month, 3 months, or 1 year) using yfinance. It then analyzes closing prices, daily returns, cumulative returns, volatility, drawdown, and correlation with SPY. The results are then visualized with Matplotlib. This project was built to develop Python, financial-data analysis, and Git/GitHub skills.
 
 ## Current Features
 
@@ -17,7 +17,7 @@ MarketLens PR is a program that downloads one month of daily stock data using yf
 ### Visualizations
 
 1. Closing-price line chart
-    - Shows closing price across the downloaded month.
+    - Shows closing price across the selected period.
 2. Cumulative-return line chart
     - Shows the total percentage change from the first closing price.
 3. Daily-returns bar chart
@@ -69,14 +69,27 @@ Run the program from the project folder:
 
 python3 market_data.py
 
-The program asks for a ticker and period of time of data to be downloaded, prints the calculated returns and volatility statistics, and displays closing-price, cumulative-return, and daily-return charts.
+The program asks for a ticker and period of time of data to be downloaded, prints the calculated returns, volatility, drawdown, and correlation statistics, and displays the closing-price, cumulative-return, daily-return, drawdown, and SPY-comparison charts.
+
+## Project Structure
+
+- `market_data.py`: Main program. Handles user input, downloads data, prints statistics, and displays charts.
+- `calculations.py`: Contains `calculate_returns`, which computes daily and cumulative returns.
+- `test_calculations.py`: Tests for `calculate_returns` using sample prices (no internet connection needed).
+
+## Running Tests
+
+With the virtual environment activated, run from the project folder:
+
+python3 test_calculations.py
+
+If no `AssertionError` appears, all tests passed.
 
 ## Current Limitations
 
-1. Historical reults can't predict future performance.
+1. Historical results can't predict future performance.
 
 ## Future Improvements
 
-- Compare a stock’s performance against a market benchmark.
 - Export analysis results and charts.
 
